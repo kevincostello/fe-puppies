@@ -36,6 +36,18 @@ export class Puppies extends Component {
             );
           })}
         </ul>
+        <form onSubmit={this.handleSubmit}>
+          <label htmlFor="">
+            Name:
+            <input type="text" onChange={this.handleChange} name="name" />
+          </label>
+
+          <label htmlFor="">
+            url:
+            <input type="text" onChange={this.handleChange} name="url" />
+          </label>
+          <button>Add puppy :)</button>
+        </form>
       </div>
     );
   }
@@ -43,6 +55,21 @@ export class Puppies extends Component {
   showCuties = () => {
     this.setState(currentState => {
       return { visiblePups: !currentState.visiblePups };
+    });
+  };
+
+  handleChange = event => {
+    console.log(event.target.name + event.target.value);
+    const { name, value } = event.target;
+    this.setState(currentState => {
+      return { newPup: { ...currentState.newPup, [name]: value } };
+    });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    this.setState(currentState => {
+      return { pups: [...currentState.pups, currentState.newPup] };
     });
   };
 }
