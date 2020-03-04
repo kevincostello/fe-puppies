@@ -48,9 +48,45 @@ export class Puppies extends Component {
           </label>
           <button>Add puppy :)</button>
         </form>
+
+        <button onClick={this.savePuppies}>Save puppies!</button>
       </div>
     );
   }
+
+  componentDidMount() {
+    const pups = localStorage.getItem("pups");
+    console.log("mounting", pups);
+    if (pups) {
+      const state = JSON.parse(pups);
+      console.log("in here", state);
+      this.setState({ pups: state });
+    } else {
+      console.log("not in here");
+      // this.setState({
+      //   pups: [
+      //     {
+      //       name: "jet",
+      //       url: "http://cdn.akc.org/content/hero/puppy_pictures_header.jpg"
+      //     },
+      //     {
+      //       name: "barney",
+      //       url:
+      //         "https://cdn2-www.dogtime.com/assets/uploads/2011/03/puppy-development.jpg"
+      //     },
+      //     {
+      //       name: "aela",
+      //       url:
+      //         "https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2018/05/22224952/beagle-puppy-in-large-cushion-chair.jpg"
+      //     }
+      //   ]
+      // });
+    }
+  }
+
+  savePuppies = () => {
+    localStorage.setItem("pups", JSON.stringify(this.state.pups));
+  };
 
   showCuties = () => {
     this.setState(currentState => {
