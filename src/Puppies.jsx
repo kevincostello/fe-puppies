@@ -18,12 +18,14 @@ export class Puppies extends Component {
           "https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2018/05/22224952/beagle-puppy-in-large-cushion-chair.jpg"
       }
     ],
-    visiblePups: true
+    visiblePups: true,
+    displayPuppies: true
   };
   render() {
-    return (
+    return this.state.displayPuppies ? (
       <div>
-        <button onClick={this.showCuties}>show dem cuties</button>
+        <button onClick={this.displayPuppyList}>Display list of puppies</button>
+        <button onClick={this.showCuties}>show images of dem cuties</button>
         <ul id="puppylist">
           {this.state.pups.map(pup => {
             return (
@@ -36,6 +38,7 @@ export class Puppies extends Component {
             );
           })}
         </ul>
+
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="">
             Name:
@@ -51,6 +54,8 @@ export class Puppies extends Component {
 
         <button onClick={this.savePuppies}>Save puppies!</button>
       </div>
+    ) : (
+      <button onClick={this.displayPuppyList}>Display list of puppies</button>
     );
   }
 
@@ -106,6 +111,13 @@ export class Puppies extends Component {
     event.preventDefault();
     this.setState(currentState => {
       return { pups: [...currentState.pups, currentState.newPup] };
+    });
+  };
+
+  displayPuppyList = event => {
+    event.preventDefault();
+    this.setState(currentState => {
+      return { displayPuppies: !currentState.displayPuppies };
     });
   };
 }
