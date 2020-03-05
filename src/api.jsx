@@ -53,6 +53,9 @@ export const formAnimal = (
         <button>Add {keyName} :)</button>
       </form>
 
+      {/* <button onClick={event => change(event, animalArray, textToDisplay)}>
+        {textToDisplay}
+      </button> */}
       <button onClick={save}>Save puppies!</button>
     </div>
   );

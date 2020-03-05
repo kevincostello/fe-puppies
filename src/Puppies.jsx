@@ -56,7 +56,8 @@ export class Puppies extends Component {
           this.state.visiblePups,
           this.handleChange,
           this.handleSubmit,
-          this.savePuppies,
+          this.saveAnimals,
+          // this.savePuppies,
           "newPup",
           "pups"
         )}
@@ -71,7 +72,8 @@ export class Puppies extends Component {
           this.state.visibleKits,
           this.handleChange,
           this.handleSubmit,
-          this.savePuppies,
+          this.saveAnimals,
+          // this.savePuppies,
           "newKit",
           "kits"
         )}
@@ -89,7 +91,8 @@ export class Puppies extends Component {
           this.state.visiblePups,
           this.handleChange,
           this.handleSubmit,
-          this.savePuppies,
+          this.saveAnimals,
+          // this.savePuppies,
           "newPup",
           "pups"
         )}
@@ -117,7 +120,8 @@ export class Puppies extends Component {
           this.state.visibleKits,
           this.handleChange,
           this.handleSubmit,
-          this.savePuppies,
+          this.saveAnimals,
+          // this.savePuppies,
           "newKit",
           "kits"
         )}
@@ -155,9 +159,10 @@ export class Puppies extends Component {
     }
   }
 
-  savePuppies = () => {
-    localStorage.setItem("pups", JSON.stringify(this.state.pups));
-    localStorage.setItem("kits", JSON.stringify(this.state.kits));
+  saveAnimals = () => {
+    const { pups, kits } = this.state;
+    localStorage.setItem("pups", JSON.stringify(pups));
+    localStorage.setItem("kits", JSON.stringify(kits));
   };
 
   showCuties = () => {
