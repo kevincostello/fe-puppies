@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import * as api from "./api";
 
 export class Puppies extends Component {
   state = {
@@ -19,43 +20,112 @@ export class Puppies extends Component {
       }
     ],
     visiblePups: true,
-    displayPuppies: true
+    displayPuppies: true,
+    kits: [
+      {
+        name: "Top Cat",
+        url:
+          "https://vignette.wikia.nocookie.net/characters/images/f/fa/Top_Cat.png/revision/latest/scale-to-width-down/340?cb=20140620211557"
+      },
+      {
+        name: "Slyvester the Cat",
+        url:
+          "https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Sylvester_the_Cat.svg/1200px-Sylvester_the_Cat.svg.png"
+      },
+      {
+        name: "Bagpuss",
+        url:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTS7TjvHRAze7AM0jlgnFttg0StRu9oRhVO5JgzTkNu17Ue0jAR"
+      }
+    ],
+    visibleKits: true,
+    displayKittens: true
   };
   render() {
-    return this.state.displayPuppies ? (
+    return this.state.displayPuppies && this.state.displayKittens ? (
       <div>
-        <button onClick={this.displayPuppyList}>Display list of puppies</button>
-        <button onClick={this.showCuties}>show images of dem cuties</button>
-        <ul id="puppylist">
-          {this.state.pups.map(pup => {
-            return (
-              <li key={pup.url}>
-                {pup.name}
-                {this.state.visiblePups ? (
-                  <img height={100} alt="puppy" src={pup.url} />
-                ) : null}
-              </li>
-            );
-          })}
-        </ul>
-
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="">
-            Name:
-            <input type="text" onChange={this.handleChange} name="name" />
-          </label>
-
-          <label htmlFor="">
-            url:
-            <input type="text" onChange={this.handleChange} name="url" />
-          </label>
-          <button>Add puppy :)</button>
-        </form>
-
-        <button onClick={this.savePuppies}>Save puppies!</button>
+        {api.clicker(
+          this.displayAnimalList,
+          "displayPuppies",
+          "Display list of pups"
+        )}
+        {api.formAnimal(
+          this.state.pups,
+          this.showCuties,
+          this.state.visiblePups,
+          this.handleChange,
+          this.handleSubmit,
+          this.savePuppies
+        )}
+        {api.clicker(
+          this.displayAnimalList,
+          "displayKittens",
+          "Display list of kits"
+        )}
+        {api.formAnimal(
+          this.state.kits,
+          this.showCuties,
+          this.state.visibleKits,
+          this.handleChange,
+          this.handleSubmit,
+          this.savePuppies
+        )}
+      </div>
+    ) : this.state.displayPuppies ? (
+      <div>
+        {api.clicker(
+          this.displayAnimalList,
+          "displayPuppies",
+          "Display list of pups"
+        )}
+        {api.formAnimal(
+          this.state.pups,
+          this.showCuties,
+          this.state.visiblePups,
+          this.handleChange,
+          this.handleSubmit,
+          this.savePuppies
+        )}
+        {api.clicker(
+          this.displayAnimalList,
+          "displayKittens",
+          "Display list of kits"
+        )}
+      </div>
+    ) : this.state.displayKittens ? (
+      <div>
+        {api.clicker(
+          this.displayAnimalList,
+          "displayPuppies",
+          "Display list of pups"
+        )}
+        {api.clicker(
+          this.displayAnimalList,
+          "displayKittens",
+          "Display list of kits"
+        )}
+        {api.formAnimal(
+          this.state.kits,
+          this.showCuties,
+          this.state.visibleKits,
+          this.handleChange,
+          this.handleSubmit,
+          this.savePuppies
+        )}
       </div>
     ) : (
-      <button onClick={this.displayPuppyList}>Display list of puppies</button>
+      <div>
+        {api.clicker(
+          this.displayAnimalList,
+          "displayPuppies",
+          "Display list of pups"
+        )}
+        {api.clicker(
+          this.displayAnimalList,
+          "displayKittens",
+          "Display list of kits"
+        )}
+      </div>
     );
   }
 
@@ -68,24 +138,6 @@ export class Puppies extends Component {
       this.setState({ pups: state });
     } else {
       console.log("not in here");
-      // this.setState({
-      //   pups: [
-      //     {
-      //       name: "jet",
-      //       url: "http://cdn.akc.org/content/hero/puppy_pictures_header.jpg"
-      //     },
-      //     {
-      //       name: "barney",
-      //       url:
-      //         "https://cdn2-www.dogtime.com/assets/uploads/2011/03/puppy-development.jpg"
-      //     },
-      //     {
-      //       name: "aela",
-      //       url:
-      //         "https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2018/05/22224952/beagle-puppy-in-large-cushion-chair.jpg"
-      //     }
-      //   ]
-      // });
     }
   }
 
@@ -114,10 +166,12 @@ export class Puppies extends Component {
     });
   };
 
-  displayPuppyList = event => {
+  displayAnimalList = (event, animal) => {
+    console.log("in here ever", event, animal);
     event.preventDefault();
     this.setState(currentState => {
-      return { displayPuppies: !currentState.displayPuppies };
+      console.log("currentState: ", currentState);
+      return { [animal]: !currentState[animal] };
     });
   };
 }

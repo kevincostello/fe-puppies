@@ -4,12 +4,14 @@ import "./App.css";
 import Puppies from "./Puppies";
 import Header from "./Header";
 import Footer from "./Footer";
+import Kittens from "./Kittens";
 
 function App() {
   return (
     <div className="App">
       <Header />
       <Puppies />
+      {/* <Kittens /> */}
       <Footer />
     </div>
   );
