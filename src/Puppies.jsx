@@ -42,7 +42,8 @@ export class Puppies extends Component {
     displayKittens: true
   };
   render() {
-    return this.state.displayPuppies && this.state.displayKittens ? (
+    const { kits, pups } = this.state;
+    return this.state.displayPuppies && this.state.displayKittens ? ( // show pups and kits
       <div>
         {api.clicker(
           this.displayAnimalList,
@@ -50,12 +51,14 @@ export class Puppies extends Component {
           "Display list of pups"
         )}
         {api.formAnimal(
-          this.state.pups,
+          pups,
           this.showCuties,
           this.state.visiblePups,
           this.handleChange,
           this.handleSubmit,
-          this.savePuppies
+          this.savePuppies,
+          "newPup",
+          "pups"
         )}
         {api.clicker(
           this.displayAnimalList,
@@ -63,15 +66,17 @@ export class Puppies extends Component {
           "Display list of kits"
         )}
         {api.formAnimal(
-          this.state.kits,
+          kits,
           this.showCuties,
           this.state.visibleKits,
           this.handleChange,
           this.handleSubmit,
-          this.savePuppies
+          this.savePuppies,
+          "newKit",
+          "kits"
         )}
       </div>
-    ) : this.state.displayPuppies ? (
+    ) : this.state.displayPuppies ? ( // show pups only
       <div>
         {api.clicker(
           this.displayAnimalList,
@@ -79,12 +84,14 @@ export class Puppies extends Component {
           "Display list of pups"
         )}
         {api.formAnimal(
-          this.state.pups,
+          pups,
           this.showCuties,
           this.state.visiblePups,
           this.handleChange,
           this.handleSubmit,
-          this.savePuppies
+          this.savePuppies,
+          "newPup",
+          "pups"
         )}
         {api.clicker(
           this.displayAnimalList,
@@ -92,7 +99,7 @@ export class Puppies extends Component {
           "Display list of kits"
         )}
       </div>
-    ) : this.state.displayKittens ? (
+    ) : this.state.displayKittens ? ( // show kits only
       <div>
         {api.clicker(
           this.displayAnimalList,
@@ -105,15 +112,18 @@ export class Puppies extends Component {
           "Display list of kits"
         )}
         {api.formAnimal(
-          this.state.kits,
+          kits,
           this.showCuties,
           this.state.visibleKits,
           this.handleChange,
           this.handleSubmit,
-          this.savePuppies
+          this.savePuppies,
+          "newKit",
+          "kits"
         )}
       </div>
     ) : (
+      // show neither pups nor kits
       <div>
         {api.clicker(
           this.displayAnimalList,
@@ -131,11 +141,15 @@ export class Puppies extends Component {
 
   componentDidMount() {
     const pups = localStorage.getItem("pups");
-    console.log("mounting", pups);
+    const kits = localStorage.getItem("kits");
+    console.log("mounting");
     if (pups) {
       const state = JSON.parse(pups);
-      console.log("in here", state);
       this.setState({ pups: state });
+    }
+    if (kits) {
+      const state = JSON.parse(kits);
+      this.setState({ kits: state });
     } else {
       console.log("not in here");
     }
@@ -143,6 +157,7 @@ export class Puppies extends Component {
 
   savePuppies = () => {
     localStorage.setItem("pups", JSON.stringify(this.state.pups));
+    localStorage.setItem("kits", JSON.stringify(this.state.kits));
   };
 
   showCuties = () => {
@@ -151,26 +166,25 @@ export class Puppies extends Component {
     });
   };
 
-  handleChange = event => {
-    console.log(event.target.name + event.target.value);
+  handleChange = (event, animal) => {
     const { name, value } = event.target;
     this.setState(currentState => {
-      return { newPup: { ...currentState.newPup, [name]: value } };
+      return { [animal]: { ...currentState[animal], [name]: value } };
     });
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event, newAnimal, animalKey) => {
     event.preventDefault();
     this.setState(currentState => {
-      return { pups: [...currentState.pups, currentState.newPup] };
+      return {
+        [animalKey]: [...currentState[animalKey], currentState[newAnimal]]
+      };
     });
   };
 
   displayAnimalList = (event, animal) => {
-    console.log("in here ever", event, animal);
     event.preventDefault();
     this.setState(currentState => {
-      console.log("currentState: ", currentState);
       return { [animal]: !currentState[animal] };
     });
   };

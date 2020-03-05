@@ -1,7 +1,6 @@
 import React from "react";
 
 export const clicker = (displayList, toggle, textToDisplay) => {
-  console.log(displayList, textToDisplay, toggle);
   return (
     <button onClick={event => displayList(event, toggle)}>
       {textToDisplay}
@@ -9,10 +8,19 @@ export const clicker = (displayList, toggle, textToDisplay) => {
   );
 };
 
-export const formAnimal = (animal, show, visible, change, submit, save) => {
+export const formAnimal = (
+  animal,
+  show,
+  visible,
+  change,
+  submit,
+  save,
+  newAnimal,
+  keyName
+) => {
   return (
     <div>
-      <button onClick={show}>show images of dem cuties</button>
+      <button onClick={show}>show images of {keyName}</button>
       <ul id="puppylist">
         {animal.map(pup => {
           return (
@@ -24,20 +32,39 @@ export const formAnimal = (animal, show, visible, change, submit, save) => {
         })}
       </ul>
 
-      <form onSubmit={submit}>
+      <form onSubmit={event => submit(event, newAnimal, keyName)}>
         <label htmlFor="">
           Name:
-          <input type="text" onChange={change} name="name" />
+          <input
+            type="text"
+            onChange={event => change(event, newAnimal)}
+            name="name"
+          />
         </label>
 
         <label htmlFor="">
           url:
-          <input type="text" onChange={change} name="url" />
+          <input
+            type="text"
+            onChange={event => change(event, newAnimal)}
+            name="url"
+          />
         </label>
-        <button>Add puppy :)</button>
+        <button>Add {keyName} :)</button>
       </form>
 
       <button onClick={save}>Save puppies!</button>
     </div>
   );
 };
+
+export const saveAnimal = (
+  animal,
+  show,
+  visible,
+  change,
+  submit,
+  save,
+  newAnimal,
+  keyName
+) => {};
